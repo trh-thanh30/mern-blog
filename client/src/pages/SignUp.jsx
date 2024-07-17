@@ -1,7 +1,43 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Button, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 export default function SignUpPage() {
+  const [formData, setFormData] = useState({});
+  const [errorMessages, setErrorMEssages] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const handlChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.username || !formData.email || !formData.password) {
+      return setErrorMEssages("Please fill out all fields.");
+    }
+    try {
+      setLoading(true);
+      setErrorMEssages(null);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        return setErrorMEssages(data.message);
+      }
+      setLoading(false);
+      if (res.ok) {
+        navigate("/sign-in");
+      }
+    } catch (err) {
+      setErrorMEssages(err.message);
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -23,7 +59,7 @@ export default function SignUpPage() {
         {/* right */}
 
         <div className="flex-1">
-          <form className="flex flex-col gap-4 ">
+          <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
             <div className="">
               <Label
                 className="cursor-pointer"
@@ -34,6 +70,7 @@ export default function SignUpPage() {
                 type="text"
                 placeholder="Enter your username"
                 id="username"
+                onChange={handlChange}
               ></TextInput>
             </div>
             <div className="">
@@ -46,6 +83,7 @@ export default function SignUpPage() {
                 type="email"
                 placeholder="name@domain.com"
                 id="email"
+                onChange={handlChange}
               ></TextInput>
             </div>
             <div className="">
@@ -58,10 +96,23 @@ export default function SignUpPage() {
                 type="password"
                 placeholder="Enter your password"
                 id="password"
+                onChange={handlChange}
               ></TextInput>
             </div>
-            <Button gradientDuoTone={"purpleToPink"} outline type="submit">
-              Sign Up
+            <Button
+              gradientDuoTone={"purpleToPink"}
+              outline
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Spinner size={"sm"}></Spinner>
+                  <span className="text-sm">Loading...</span>
+                </div>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
           </form>
           <div className="flex gap-2 text-sm mt-4 items-center justify-center">
@@ -72,6 +123,11 @@ export default function SignUpPage() {
               </Link>
             </span>
           </div>
+          {errorMessages && (
+            <Alert className="mt-5" color={"failure"}>
+              {errorMessages}
+            </Alert>
+          )}
         </div>
       </div>
     </div>
