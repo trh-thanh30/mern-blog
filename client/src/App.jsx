@@ -8,6 +8,7 @@ import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
 import ProjectsPage from "./pages/Projects";
 import Header from "./components/Header";
+import FooterCom from "./components/Footer";
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,7 @@ function App() {
           element={<DashboardPage></DashboardPage>}
         ></Route>
       </Routes>
+      <FooterCom></FooterCom>
     </BrowserRouter>
   );
 }
