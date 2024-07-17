@@ -3,18 +3,21 @@ import { Button, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
+
 export default function Header() {
   const path = useLocation().pathname;
   return (
-    <header>
+    <header className="shadow-md">
       <Navbar className="">
         <Link
           to="/"
-          className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
+          className={` self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white `}
         >
-          <span className="px-2 rounded-xl text-white py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          <span
+            className={` px-2 rounded-xl text-white py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 `}
+          >
             HuuThanh's
-          </span>{" "}
+          </span>
           Blog
         </Link>
         <form>
@@ -37,7 +40,9 @@ export default function Header() {
             <FaMoon></FaMoon>
           </Button>
           <Link to={"/sign-in"}>
-            <Button gradientDuoTone={"purpleToBlue"} outline>Sign In</Button>
+            <Button gradientDuoTone={"purpleToBlue"} outline>
+              Sign In
+            </Button>
           </Link>
           <Navbar.Toggle></Navbar.Toggle>
         </div>
