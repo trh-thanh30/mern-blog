@@ -11,8 +11,8 @@ import {
 export default function FooterCom() {
   return (
     <Footer container className="border border-t-8 ">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="grid w-full justify-between sm:flex md:grid-cols-1">
+      <div className="w-full mx-auto max-w-7xl">
+        <div className="grid justify-between w-full sm:flex md:grid-cols-1">
           <div className="mt-5">
             <Link
               to="/"
@@ -72,7 +72,7 @@ export default function FooterCom() {
             by="HuuThanh's blog"
             year={new Date().getFullYear()}
           ></Footer.Copyright>
-          <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
+          <div className="flex gap-6 mt-4 sm:mt-0 sm:justify-center">
             <Footer.Icon
               href="https://www.facebook.com/profile.php?id=100046281706417&locale=vi_VN"
               icon={BsFacebook}
