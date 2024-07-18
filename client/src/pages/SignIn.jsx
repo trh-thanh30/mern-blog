@@ -8,6 +8,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 export default function SignInPage() {
   const [formData, setFormData] = useState({});
 
@@ -106,6 +107,7 @@ export default function SignInPage() {
                 "Sign In"
               )}
             </Button>
+            <OAuth></OAuth>
           </form>
           <div className="flex items-center justify-center gap-2 mt-4 text-sm">
             <span>
