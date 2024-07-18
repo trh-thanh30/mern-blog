@@ -40,7 +40,7 @@ export default function SignUpPage() {
   };
   return (
     <div className="min-h-screen mt-20">
-      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
+      <div className="flex flex-col max-w-3xl gap-5 p-3 mx-auto md:flex-row md:items-center">
         {/* left */}
         <div className="flex-1">
           <Link to="/" className={`text-4xl font-bold dark:text-white `}>
@@ -51,7 +51,7 @@ export default function SignUpPage() {
             </span>
             Blog
           </Link>
-          <p className="text-sm mt-5">
+          <p className="mt-5 text-sm">
             Hi, welcome to my blog page. You can sign up with your email and
             password or with Google.
           </p>
@@ -115,7 +115,7 @@ export default function SignUpPage() {
               )}
             </Button>
           </form>
-          <div className="flex gap-2 text-sm mt-4 items-center justify-center">
+          <div className="flex items-center justify-center gap-2 mt-4 text-sm">
             <span>
               Have an account?{" "}
               <Link to={"/sign-in"} className="text-blue-500">
