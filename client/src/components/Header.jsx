@@ -41,7 +41,7 @@ export default function Header() {
         </Button>
         <div className="flex items-center gap-2 md:order-2">
           <Button
-            className="hidden w-12 h-10 sm:inline"
+            className="inline w-12 h-10 "
             color={"gray"}
             pill
             onClick={() => dispatch(toggleTheme())}
@@ -81,18 +81,30 @@ export default function Header() {
           )}
           <Navbar.Toggle></Navbar.Toggle>
         </div>
-        <Navbar.Collapse>
-          <Navbar.Link active={path === "/"} as={"div"}>
-            <Link className="block text-lg font-semibold" to="/">
+        <Navbar.Collapse fluid rounded>
+          <Navbar.Link
+            active={path === "/"}
+            as={"div"}
+            className="border-b-[1px] border-gray-300 border-solid"
+          >
+            <Link className="block text-lg font-semibold " to="/">
               Home
             </Link>
           </Navbar.Link>
-          <Navbar.Link active={path === "/about"} as={"div"}>
+          <Navbar.Link
+            className="border-b-[1px] border-gray-300 border-solid"
+            active={path === "/about"}
+            as={"div"}
+          >
             <Link className="block text-lg font-semibold" to="/about">
               About
             </Link>
           </Navbar.Link>
-          <Navbar.Link active={path === "/projects"} as={"div"}>
+          <Navbar.Link
+            className="border-b-[1px] border-gray-300 border-solid"
+            active={path === "/projects"}
+            as={"div"}
+          >
             <Link className="block text-lg font-semibold" to="/projects">
               Projects
             </Link>
