@@ -9,6 +9,7 @@ import SignUpPage from "./pages/SignUp";
 import ProjectsPage from "./pages/Projects";
 import Header from "./components/Header";
 import FooterCom from "./components/Footer";
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -19,11 +20,12 @@ function App() {
         <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
         <Route path="/sign-up" element={<SignUpPage></SignUpPage>}></Route>
         <Route path="/projects" element={<ProjectsPage></ProjectsPage>}></Route>
-
-        <Route
-          path="/dashboard"
-          element={<DashboardPage></DashboardPage>}
-        ></Route>
+        <Route element={<PrivateRoute></PrivateRoute>}>
+          <Route
+            path="/dashboard"
+            element={<DashboardPage></DashboardPage>}
+          ></Route>
+        </Route>
       </Routes>
       <FooterCom></FooterCom>
     </BrowserRouter>
