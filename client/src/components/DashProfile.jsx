@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-undef */
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -15,10 +16,14 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 export default function DashProfile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadingProgess, setImageFileUploadingProgress] = useState();
@@ -27,6 +32,7 @@ export default function DashProfile() {
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [showModal, setShowModel] = useState(false);
   const filePickerRef = useRef();
   const dispatch = useDispatch();
   const handleImageChange = (e) => {
@@ -112,9 +118,51 @@ export default function DashProfile() {
   const offAlert = () => {
     return setUpdateUserError(null) || setUpdateUserSuccess(null);
   };
+  const handleDeleteUser = async () => {
+    setShowModel(false);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message));
+      } else {
+        dispatch(deleteUserSuccess(data));
+      }
+    } catch (err) {
+      dispatch(deleteUserFailure(err.message));
+    }
+  };
   return (
     <div className="w-full max-w-lg p-3 mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+      <div className="my-3">
+        {updateUserSuccess && (
+          <Alert onDismiss={() => offAlert()} color="success" className="mt-4">
+            {updateUserSuccess}
+          </Alert>
+        )}
+        {updateUserError && (
+          <Alert
+            onDismiss={() => offAlert()}
+            color={"failure"}
+            className="mt-4"
+          >
+            {updateUserError}
+          </Alert>
+        )}
+        {error && (
+          <Alert
+            onDismiss={() => offAlert()}
+            color={"failure"}
+            className="mt-4"
+          >
+            {error}
+          </Alert>
+        )}
+      </div>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           hidden
@@ -184,19 +232,39 @@ export default function DashProfile() {
         </Button>
       </form>
       <div className="flex items-center justify-between mt-2">
-        <span className="text-red-500">Delete Account</span>
-        <span>Sign Out</span>
+        <span
+          onClick={() => setShowModel(true)}
+          className="p-2 text-red-500 cursor-pointer"
+        >
+          Delete Account
+        </span>
+        <span className="p-2 text-red-500 cursor-pointer">Sign Out</span>
       </div>
-      {updateUserSuccess && (
-        <Alert onDismiss={() => offAlert()} color="success" className="mt-4">
-          {updateUserSuccess}
-        </Alert>
-      )}
-      {updateUserError && (
-        <Alert onDismiss={() => offAlert()} color={"failure"} className="mt-4">
-          {updateUserError}
-        </Alert>
-      )}
+
+      <Modal
+        show={showModal}
+        onClose={() => setShowModel(false)}
+        popup
+        size={"md"}
+      >
+        <Modal.Header></Modal.Header>
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 text-gray-400 h-14 w-14 dark:text-gray-200"></HiOutlineExclamationCircle>
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete your account?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button onClick={handleDeleteUser} color={"failure"}>
+                Yes, I'm sure
+              </Button>
+              <Button color={"gray"} onClick={() => setShowModel(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
