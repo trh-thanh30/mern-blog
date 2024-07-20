@@ -37,6 +37,7 @@ export default function CreatePost() {
           placeholder="Write something..."
           className="mb-12 h-72"
           required
+          id="content"
         ></ReactQuill>
         <Button className="mb-6" type="submit" gradientDuoTone={"purpleToPink"}>
           Publish Post
