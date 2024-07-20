@@ -10,6 +10,8 @@ import ProjectsPage from "./pages/Projects";
 import Header from "./components/Header";
 import FooterCom from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+import CreatePost from "./pages/CreatePost";
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +26,12 @@ function App() {
           <Route
             path="/dashboard"
             element={<DashboardPage></DashboardPage>}
+          ></Route>
+        </Route>
+        <Route element={<OnlyAdminPrivateRoute></OnlyAdminPrivateRoute>}>
+          <Route
+            path="/create-post"
+            element={<CreatePost></CreatePost>}
           ></Route>
         </Route>
       </Routes>
