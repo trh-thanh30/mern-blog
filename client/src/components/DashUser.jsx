@@ -47,7 +47,22 @@ export default function DashUser() {
       console.log(err);
     }
   };
-  const handleDeleteUser = async () => {};
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUser((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModel(false);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="p-3 overflow-x-scroll table-auto md:mx-auto scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && user.length > 0 ? (
@@ -64,7 +79,7 @@ export default function DashUser() {
             {user.map((user) => (
               <Table.Body className="divide-y" key={user._id}>
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell>
+                  <Table.Cell className="font-bold">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
@@ -77,7 +92,9 @@ export default function DashUser() {
                   <Table.Cell className="font-medium text-gray-900 dark:text-white">
                     {user.username}
                   </Table.Cell>
-                  <Table.Cell className="text-gray-900 dark:text-gray-300">{user.email}</Table.Cell>
+                  <Table.Cell className="text-gray-900 dark:text-gray-300">
+                    {user.email}
+                  </Table.Cell>
                   <Table.Cell>
                     {user.isAdmin ? (
                       <FaCheck className="text-green-500"></FaCheck>
@@ -126,12 +143,7 @@ export default function DashUser() {
               Are you sure you want to delete this user?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button
-                onClick={() => {
-                  handleDeleteUser;
-                }}
-                color={"failure"}
-              >
+              <Button onClick={handleDeleteUser} color={"failure"}>
                 Yes, I'm sure
               </Button>
               <Button color={"gray"} onClick={() => setShowModel(false)}>
