@@ -13,6 +13,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 export default function UpdatePost() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
@@ -22,9 +23,10 @@ export default function UpdatePost() {
   const { postId } = useParams();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
-    try {
-      const fectchPost = async () => {
+    const fetchPost = async () => {
+      try {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
         if (!res.ok) {
@@ -36,12 +38,13 @@ export default function UpdatePost() {
           setPublishError(null);
           setFormData(data.posts[0]);
         }
-      };
-      fectchPost();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPost();
   }, [postId]);
+
   const handleUploadImage = async () => {
     try {
       if (!file) {
@@ -79,6 +82,7 @@ export default function UpdatePost() {
       console.log(err);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -105,6 +109,7 @@ export default function UpdatePost() {
       setPublishError("Failed to publish, please try again");
     }
   };
+
   return (
     <div className="max-w-3xl min-h-screen p-3 mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Update post</h1>
