@@ -19,7 +19,13 @@ export default function UpdatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [publishError, setPublishError] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    content: "",
+    image: "",
+    _id: "",
+  });
   const { postId } = useParams();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
@@ -30,13 +36,18 @@ export default function UpdatePost() {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
         if (!res.ok) {
-          console.log(data.message);
           setPublishError(data.message);
           return;
         }
         if (res.ok) {
           setPublishError(null);
-          setFormData(data.posts[0]);
+          setFormData({
+            title: data.posts[0].title || "",
+            category: data.posts[0].category || "",
+            content: data.posts[0].content || "",
+            image: data.posts[0].image || "",
+            _id: data.posts[0]._id,
+          });
         }
       } catch (error) {
         console.log(error);
@@ -72,7 +83,10 @@ export default function UpdatePost() {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImageUploadProgress(null);
             setImageUploadError(null);
-            setFormData({ ...formData, image: downloadURL });
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              image: downloadURL,
+            }));
           });
         }
       );
@@ -86,6 +100,10 @@ export default function UpdatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!formData._id) {
+        setPublishError("Post ID is missing");
+        return;
+      }
       const res = await fetch(
         `/api/post/updatepost/${formData._id}/${currentUser._id}`,
         {
@@ -101,10 +119,8 @@ export default function UpdatePost() {
         setPublishError(data.message);
         return;
       }
-      if (res.ok) {
-        setPublishError(null);
-        navigate(`/post/${data.slug}`);
-      }
+      setPublishError(null);
+      navigate(`/post/${data.slug}`);
     } catch (error) {
       setPublishError("Failed to publish, please try again");
     }
@@ -122,17 +138,23 @@ export default function UpdatePost() {
             id="title"
             className="flex-1"
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
+              setFormData((prevFormData) => ({
+                ...prevFormData,
+                title: e.target.value,
+              }))
             }
             value={formData.title}
           ></TextInput>
           <Select
             onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
+              setFormData((prevFormData) => ({
+                ...prevFormData,
+                category: e.target.value,
+              }))
             }
             value={formData.category}
           >
-            <option value="uncategorized">Select a category</option>
+            <option value="">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">React.js</option>
             <option value="nextjs"> Next.js</option>
@@ -181,7 +203,10 @@ export default function UpdatePost() {
           required
           id="content"
           onChange={(value) => {
-            setFormData({ ...formData, content: value });
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              content: value,
+            }));
           }}
           value={formData.content}
         ></ReactQuill>

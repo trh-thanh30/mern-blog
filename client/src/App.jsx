@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
+import PostPage from "./pages/PostPage";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
         <Route path="/sign-up" element={<SignUpPage></SignUpPage>}></Route>
         <Route path="/projects" element={<ProjectsPage></ProjectsPage>}></Route>
+        <Route path="/post/:postSlug" element={<PostPage></PostPage>}></Route>
         <Route element={<PrivateRoute></PrivateRoute>}>
           <Route
             path="/dashboard"

@@ -80,9 +80,15 @@ export const updatePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to update this post"));
   }
+
+  const { postId } = req.params;
+  if (!postId) {
+    return next(errorHandler(400, "Post ID is required"));
+  }
+
   try {
     const updatedPost = await Post.findByIdAndUpdate(
-      req.params.postId,
+      postId,
       {
         $set: {
           title: req.body.title,
@@ -93,8 +99,11 @@ export const updatePost = async (req, res, next) => {
       },
       { new: true }
     );
+    if (!updatedPost) {
+      return next(errorHandler(404, "Post not found"));
+    }
     res.status(200).json(updatedPost);
   } catch (err) {
-    next(err);
+    next(errorHandler(500, "Internal Server Error"));
   }
 };
