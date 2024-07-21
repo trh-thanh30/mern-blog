@@ -22,7 +22,7 @@ export default function CreatePost() {
   const handleUploadImage = async () => {
     try {
       if (!file) {
-        setImageUploadError("Please select an image to upload");
+        setImageUploadError("Select an image to upload");
         return;
       }
       setImageUploadError(null);
