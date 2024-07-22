@@ -84,7 +84,13 @@ export default function Comment({ postId }) {
       console.log(error.message);
     }
   };
-
+  const handleEdit = async (comment, editedContent) => {
+    setComments(
+      comments.map(
+        (c) => (c._id = comment._id ? { ...c, content: editedContent } : c)
+      )
+    );
+  };
   return (
     <div className="w-full max-w-2xl p-3 mx-auto">
       {currentUser ? (
@@ -140,11 +146,12 @@ export default function Comment({ postId }) {
           <div className="flex items-center gap-1 my-5 text-sm">
             <p>Comments</p>
             <div className="px-2 py-1 border border-gray-400 border-solid rounded-sm">
-              <p className="">{comments.length}</p>
+              <p className="w-2">{comments.length}</p>
             </div>
           </div>
           {comments.map((comment) => (
             <CommentUser
+              onEdit={handleEdit}
               onLike={handleLike}
               comment={comment}
               key={comment._id}
