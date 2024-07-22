@@ -87,12 +87,30 @@ export default function Comment({ postId }) {
       console.log(error.message);
     }
   };
-  const handleEdit = async (comment, editedContent) => {
-    setComments(
-      comments.map(
-        (c) => (c._id = comment._id ? { ...c, content: editedContent } : c)
-      )
-    );
+  const handleEdit = async (editedComment, editedContent) => {
+    try {
+      const res = await fetch(`/api/comment/editComment/${editedComment._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: editedContent,
+        }),
+      });
+
+      if (res.ok) {
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment._id === editedComment._id
+              ? { ...comment, content: editedContent }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   const handleDelete = async (commentId) => {
     setShowModal(false);
@@ -106,7 +124,9 @@ export default function Comment({ postId }) {
       });
       if (res.ok) {
         const data = await res.json();
-        setComment(comments.filter((comment) => comment._id !== commentId));
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment._id !== commentId)
+        );
       }
     } catch (error) {
       console.log(error);

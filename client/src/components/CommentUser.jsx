@@ -131,14 +131,14 @@ export default function CommentUser({ comment, onLike, onEdit, onDelete }) {
                     <button
                       onClick={handleEdit}
                       type="button"
-                      className="font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-500"
+                      className="font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:dark:text-blue-500"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => onDelete(comment._id)}
                       type="button"
-                      className="font-semibold text-gray-500 dark:text-gray-400 hover:text-red-500"
+                      className="font-semibold text-gray-500 dark:text-gray-400 hover:text-red-500 hover:dark:text-red-500"
                     >
                       Delete
                     </button>
