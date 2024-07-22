@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
+import Comment from "../components/Comment";
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  console.log(error);
   const [post, setPost] = useState(null);
   useEffect(() => {
     const fetchPost = async () => {
@@ -69,6 +70,7 @@ export default function PostPage() {
       <div className="w-full max-w-4xl mx-auto">
         <CallToAction></CallToAction>
       </div>
+      <Comment postId={post._id}></Comment>
     </main>
   );
 }
