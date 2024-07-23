@@ -38,11 +38,11 @@ export const getPosts = async (req, res, next) => {
       ...(req.query.searchTerm && {
         $or: [
           { title: { $regex: req.query.searchTerm, $options: "i" } },
-          { content: req.query.searchTerm, $options: "i" },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
         ],
       }),
     })
-      .sort({ updateAt: sortDirection })
+      .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
     const totalPosts = await Post.countDocuments();
@@ -60,10 +60,11 @@ export const getPosts = async (req, res, next) => {
       totalPosts,
       lastMonthPosts,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
+
 export const deletePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to delete this post"));

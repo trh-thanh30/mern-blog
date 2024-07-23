@@ -15,16 +15,18 @@ import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
+import Search from "./pages/Search";
 function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop></ScrollToTop>
+      <ScrollToTop></ScrollToTop>
       <Header></Header>
       <Routes>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/about" element={<AboutPage></AboutPage>}></Route>
         <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
         <Route path="/sign-up" element={<SignUpPage></SignUpPage>}></Route>
+        <Route path="/search" element={<Search></Search>}></Route>
         <Route path="/projects" element={<ProjectsPage></ProjectsPage>}></Route>
         <Route path="/post/:postSlug" element={<PostPage></PostPage>}></Route>
         <Route element={<PrivateRoute></PrivateRoute>}>
