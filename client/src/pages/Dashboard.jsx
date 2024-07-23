@@ -4,6 +4,7 @@ import DashProfile from "../components/DashProfile";
 import DashSideBar from "../components/DashSideBar";
 import DashPosts from "../components/DashPosts";
 import DashUser from "../components/DashUser";
+import DashComments from "../components/DashComments";
 export default function DashboardPage() {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -25,7 +26,10 @@ export default function DashboardPage() {
       {tab === "profile" && <DashProfile></DashProfile>}
       {/* posts ... */}
       {tab === "posts" && <DashPosts></DashPosts>}
+      {/* Users ... */}
       {tab === "user" && <DashUser></DashUser>}
+      {/* Comments ... */}
+      {tab === "comments" && <DashComments></DashComments>}
     </div>
   );
 }
